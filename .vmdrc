@@ -1,0 +1,72 @@
+############################################################################
+# DESCRIPTION:
+#
+# VMD startup script.  The commands here are executed as soon as VMD starts up
+############################################################################
+
+# turn on lights 0 and 1
+light 0 on
+light 1 on
+light 2 off
+light 3 off
+
+# position the stage and axes
+axes location off
+stage location off
+
+# position and turn on menus
+menu main     move 5   225
+menu display  move 395 30
+menu graphics move 395 500
+menu color    move 125 225
+menu files    move 125 325
+menu labels   move 125 525
+menu render   move 125 525
+
+menu main      on
+
+color Display Background white
+display projection orthographic
+display depthcue off
+display culling off
+
+proc reset_viz {molid} {
+  # operate only on existing molecules
+  if {[lsearch [molinfo list] $molid] >= 0} {
+    # delete all representations
+    set numrep [molinfo $molid get numreps]
+    for {set i 0} {$i < $numrep} {incr i} {
+      mol delrep $i $molid
+    }
+    # add new representations
+    # mol representation CPK
+    # add other representation stuff you want here
+    # mol addrep $molid
+    # mol addrep top
+    # mol modstyle 0 top DynamicBonds 1.50 0.08 10
+    # mol modstyle 0 top DynamicBonds 0.00 0.08 10
+    mol addrep top
+    mol modstyle 1 top VDW 0.2 30
+  }
+  display shadows on
+  display ambientocclusion on
+  display aoambient 0.7
+  display aodirect 0.3
+}
+
+proc reset_viz_proxy {args} {
+  foreach {fname molid rw} $args {}
+  eval "after idle {reset_viz $molid}"
+}
+
+## put a trace on vmd_initialize_structure
+trace variable vmd_initialize_structure w reset_viz_proxy
+
+after idle {
+  if { 1 } {
+    foreach molid [molinfo list] {
+      reset_viz $molid
+    }
+  }
+}
+
