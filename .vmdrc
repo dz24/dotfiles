@@ -16,17 +16,27 @@ stage location off
 
 # position and turn on menus
 menu main     move 5   225
-menu display  move 395 30
-menu graphics move 395 500
+menu display  move 2   30
+menu graphics move 1   1  
 menu color    move 125 225
 menu files    move 125 325
 menu labels   move 125 525
-menu render   move 125 525
+menu render   move 125 5  
+
+# define a new, very transparent material 'water'
+material add Water
+material change ambient   Water 0.00
+material change specular  Water 0.50
+material change diffuse   Water 0.65
+material change shininess Water 0.00
+material change opacity   Water 0.05
 
 menu main      on
 
 color Display Background white
+display resize 1000 1000
 display projection orthographic
+display rendermode GLSL
 display depthcue off
 display culling off
 
@@ -38,15 +48,21 @@ proc reset_viz {molid} {
     for {set i 0} {$i < $numrep} {incr i} {
       mol delrep $i $molid
     }
-    # add new representations
-    # mol representation CPK
-    # add other representation stuff you want here
-    # mol addrep $molid
-    # mol addrep top
-    # mol modstyle 0 top DynamicBonds 1.50 0.08 10
-    # mol modstyle 0 top DynamicBonds 0.00 0.08 10
+    # add new representation: protein
+    mol representation NewCartoon
+    mol selection {protein}
+
+    # add new representation: water
     mol addrep top
-    mol modstyle 1 top VDW 0.2 30
+    mol representation QuickSurf
+    mol selection {water}
+    mol material Water
+
+    # add new representation: lipid
+    mol addrep top
+    mol selection {lipid}
+    mol representation Points
+    mol material Transparent
   }
   display shadows on
   display ambientocclusion on
@@ -69,4 +85,3 @@ after idle {
     }
   }
 }
-
