@@ -7,7 +7,7 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices
 
 -- For example, changing the color scheme:
-config.font_size = 30
+config.font_size = 25
 
 config.enable_tab_bar = true
 config.window_decorations = "RESIZE"
@@ -21,71 +21,54 @@ config.window_padding = {
   bottom = 0,
 }
 
--- my coolnight colorscheme:
--- config.colors = {
--- 	foreground = "#CBE0F0",
--- 	background = "#011423",
--- 	cursor_bg = "#47FF9C",
--- 	cursor_border = "#47FF9C",
--- 	cursor_fg = "#011423",
--- 	selection_bg = "#033259",
--- 	selection_fg = "#CBE0F0",
--- 	ansi = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#0FC5ED", "#a277ff", "#24EAF7", "#24EAF7" },
--- 	brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
--- }
-
 config.keys = {
-  -- This will create a new split and run the `top` program inside it
-  {
-    key = 'd',
-    mods = 'CMD',
-    action = wezterm.action.SplitPane {
-      direction = 'Right',
-      size = { Percent = 50 },
-    },
+-- This will create a new split and run the `top` program inside it
+    {key = 'd', mods = 'ALT', action = wezterm.action.SplitPane {
+     direction = 'Right', size = { Percent = 50 }}},
+    {key = 'd', mods = 'SHIFT|ALT', action = wezterm.action.SplitPane {
+     direction = 'Down', size = { Percent = 50 }}},
+  { key = 't',
+    mods = 'ALT',
+    action = wezterm.action.SpawnTab 'CurrentPaneDomain',
   },
-  {
-    key = 'd',
-    mods = 'SHIFT|CMD',
-    action = wezterm.action.SplitPane {
-      direction = 'Down',
-      size = { Percent = 50 },
-    },
-  },
-    -- Make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
+-- Make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
     {key="LeftArrow", mods="OPT", action=wezterm.action{SendString="\x1bb"}},
-    -- Make Option-Right equivalent to Alt-f; forward-word
+-- Make Option-Right equivalent to Alt-f; forward-word
     {key="RightArrow", mods="OPT", action=wezterm.action{SendString="\x1bf"}},
-  {
-    key = 'w',
-    mods = 'CMD',
-    action = wezterm.action.CloseCurrentPane { confirm = true },
-  },
+-- Close pane
+    {key = 'w', mods = 'ALT', action = wezterm.action.CloseCurrentPane { confirm = true }},
 -- Cycle to the next pane
-    {key="[", mods="CMD", action=wezterm.action{ActivatePaneDirection="Next"}},
+    {key="[", mods="ALT", action=wezterm.action{ActivatePaneDirection="Next"}},
 -- Cycle to the previous pane
-    {key="]", mods="CMD", action=wezterm.action{ActivatePaneDirection="Prev"}},
+    {key="]", mods="ALT", action=wezterm.action{ActivatePaneDirection="Prev"}},
+-- move pane
+    {key="h", mods="ALT", action=wezterm.action{ActivatePaneDirection="Left"}},
+    {key="l", mods="ALT", action=wezterm.action{ActivatePaneDirection="Right"}},
+    {key="k", mods="ALT", action=wezterm.action{ActivatePaneDirection="Up"}},
+    {key="j", mods="ALT", action=wezterm.action{ActivatePaneDirection="Down"}},
 -- Fullscreen pane in tab
-    {key='z', mods='CMD', action = wezterm.action.TogglePaneZoomState},
-    -- {key='PageDown', mods='NONE', action = action=wezterm.action.ScrollByPage(1)},
+    {key='z', mods='ALT', action = wezterm.action.TogglePaneZoomState},
+-- activate pane selection mode with numeric labels
+    { key = '1', mods = 'ALT', action = wezterm.action.PaneSelect },
+    { key = '2', mods = 'ALT', action = wezterm.action.PaneSelect {
+      alphabet = '1234567890',
+    }, },
+  -- show the pane selection mode, but have it swap the active and selected panes
+    { key = '3', mods = 'ALT', action = wezterm.action.PaneSelect {
+      mode = 'SwapWithActive',
+    },
+  },
 }
 
 
 config.color_scheme = 'Abernathy'
--- config.color_scheme = 'Andromeda'
--- config.color_scheme = 'Apple Classic'
--- config.color_scheme = 'arcoiris'
--- config.color_scheme = 'Argonaut'
--- config.color_scheme = 'Atelier Lakeside (base16)'
--- config.color_scheme = 'Atelier Plateau Light (base16)'
--- config.color_scheme = 'Bamboo Multiplex'
--- config.color_scheme = 'Belge (terminal.sexy)'
 
 -- and finally, return the configuration to wezterm
 -- local act = wezterm.action
 -- config.keys = {
 --    { key = 'PageUp', mods = 'SHIFT', action = act.DisableDefaultAssignment },
 --    { key = 'PageDown', mods = 'SHIFT', action = act.DisableDefaultAssignment },
+--    {key='PageDown', mods='NONE', action = action=wezterm.action.ScrollByPage(1)},
 -- }
 --
 return config
