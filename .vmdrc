@@ -42,8 +42,8 @@ proc reset_viz {molid} {
     # mol representation CPK
     # add other representation stuff you want here
     # mol addrep $molid
-    # mol addrep top
-    # mol modstyle 0 top DynamicBonds 1.50 0.08 10
+    mol addrep top
+    mol modstyle 0 top DynamicBonds 1.50 0.08 10
     # mol modstyle 0 top DynamicBonds 0.00 0.08 10
     mol addrep top
     mol modstyle 1 top VDW 0.2 30
