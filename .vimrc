@@ -17,6 +17,9 @@
 let mapleader=" "
 
 set nocompatible              " be iMproved, required filetype plugin indent on
+filetype plugin indent on
+"Python Settings
+autocmd FileType python set softtabstop=4 tabstop=4 autoindent noexpandtab textwidth=80 smartindent
 
 autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=0 expandtab
 
@@ -75,9 +78,12 @@ set tags=tags
 
 " :PlugInstall
 call plug#begin()
-Plug 'wuelnerdotexe/vim-astro'
+" Plug 'wuelnerdotexe/vim-astro'
+" Plug 'mindriot101/vim-yapf'
+" Plug 'fisadev/vim-isort'
 
 call plug#end()
+" let g:vim_isort_python_version = 'python3'
 
 "highlights eol whitespaces
 :highlight ExtraWhitespace ctermbg=red guibg=red
@@ -97,3 +103,21 @@ function! NumberToggle()
 endfunc
 
 map <Leader>m :call NumberToggle()<CR>
+
+set tags=tags;/
+
+set listchars=tab:▶\ ,eol:¶,space:\\u2219
+set list
+
+" add header for python
+autocmd BufNewFile *.py 0put =\"\n\"|$
+autocmd BufNewFile *.py 0put =\"\n\"|$
+autocmd BufNewFile *.py 0put =\"#plt.savefig('dump.pdf')\"|$
+autocmd BufNewFile *.py 0put =\"#plt.style.use('science')\"|$
+autocmd BufNewFile *.py 0put =\"#import scienceplots\"|$
+autocmd BufNewFile *.py 0put =\"#from dztools.funcs.plotter import COLS\"|$
+autocmd BufNewFile *.py 0put =\"import numpy as np\"|$
+autocmd BufNewFile *.py 0put =\"import matplotlib.pyplot as plt\"|$
+" autocmd BufNewFile *.py 0put =\"#!/usr/bin/python\<nl>\"|$
+" autocmd BufNewFile *.py 0put =\"import matplotlib.pyplot as plt"|$
+
