@@ -1,3 +1,3 @@
 # dotfiles
 
-check
+check 2
